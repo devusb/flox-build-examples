@@ -6,20 +6,46 @@
       "go": {
         "pkg-path": "go"
       },
+      "gum": {
+        "pkg-path": "gum"
+      },
       "iana-etc": {
         "pkg-path": "iana-etc"
       },
       "mailcap": {
         "pkg-path": "mailcap"
       },
+      "redis": {
+        "pkg-path": "redis"
+      },
       "tzdata": {
         "pkg-path": "tzdata"
       }
     },
-    "options": {},
+    "vars": {
+      "REDISBIND": "127.0.0.1",
+      "REDISPORT": "16379"
+    },
+    "hook": {
+      "on-activate": "\n# XXX: https://github.com/flox/flox/issues/1341\nunset LD_AUDIT\n\nexport REDISHOME=\"$FLOX_ENV_CACHE/redis\"\nexport REDISDATA=\"$REDISHOME/data\"\nexport REDISCONFIG=\"$REDISHOME/redis.conf\"\n\nif [ ! -d \"$REDISDATA\" ]; then\n  mkdir -p \"$REDISDATA\"\nfi\n\ncat >$REDISCONFIG <<EOF\nbind $REDISBIND\nport $REDISPORT\nEOF\n\n"
+    },
+    "profile": {
+      "common": "echo \"\"\necho \"     ╔═════════════════════════════════════╗\"\necho \"     ║                                     ║\"\necho \"     ║  Start Redis in the background:     ║\"\necho \"     ║  👉 flox services start             ║\"\necho \"     ║  👉 flox activate --start-services  ║\"\necho \"     ║                                     ║\"\necho \"     ║  Try to connect to Redis:           ║\"\necho \"     ║  👉redis-cli -p \\$REDISPORT ping     ║\"\necho \"     ║                                     ║\"\necho \"     ╚═════════════════════════════════════╝\"\necho \"\"\n"
+    },
+    "options": {
+      "systems": [
+        "aarch64-darwin",
+        "aarch64-linux",
+        "x86_64-darwin",
+        "x86_64-linux"
+      ]
+    },
     "services": {
       "quotes-app-go": {
         "command": "go run main.go"
+      },
+      "redis": {
+        "command": "redis-server \"$REDISCONFIG\" \\\n  --daemonize no \\\n  --dir \"$REDISDATA\"\n"
       }
     },
     "build": {
@@ -57,14 +83,15 @@
       "description": "Go Programming language",
       "install_id": "go",
       "license": "BSD-3-Clause",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "go-1.24.3",
       "pname": "go",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:23:51.436832Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:36:16.406321Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -86,14 +113,15 @@
       "description": "Go Programming language",
       "install_id": "go",
       "license": "BSD-3-Clause",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "go-1.24.3",
       "pname": "go",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:41:59.306290Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:54:49.625895Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -115,14 +143,15 @@
       "description": "Go Programming language",
       "install_id": "go",
       "license": "BSD-3-Clause",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "go-1.24.3",
       "pname": "go",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:58:21.688938Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:12:23.667232Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -144,14 +173,15 @@
       "description": "Go Programming language",
       "install_id": "go",
       "license": "BSD-3-Clause",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "go-1.24.3",
       "pname": "go",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T05:17:42.732942Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:32:29.219901Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -167,20 +197,141 @@
       "priority": 5
     },
     {
+      "attr_path": "gum",
+      "broken": false,
+      "derivation": "/nix/store/9611az532yrja26hnb6knavbxdgy1yrl-gum-0.16.1.drv",
+      "description": "Tasty Bubble Gum for your shell",
+      "install_id": "gum",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "name": "gum-0.16.1",
+      "pname": "gum",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:36:16.552075Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.16.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/k3hfaznp6m5zm7436gki029amjycscfs-gum-0.16.1"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "gum",
+      "broken": false,
+      "derivation": "/nix/store/bqjky4b54ncwq9p7zad781naya87vz6n-gum-0.16.1.drv",
+      "description": "Tasty Bubble Gum for your shell",
+      "install_id": "gum",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "name": "gum-0.16.1",
+      "pname": "gum",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:54:49.885812Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.16.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/aaf6hhl897a6l2xv9jwgjsr5gwj000wl-gum-0.16.1"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "gum",
+      "broken": false,
+      "derivation": "/nix/store/r5p08in9h18sy7hy0gxifnywpsdhzxph-gum-0.16.1.drv",
+      "description": "Tasty Bubble Gum for your shell",
+      "install_id": "gum",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "name": "gum-0.16.1",
+      "pname": "gum",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:12:23.817011Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.16.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/djbqwg8la91xj8qnjp0nv1brqnvv69q5-gum-0.16.1"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "gum",
+      "broken": false,
+      "derivation": "/nix/store/pzc4cj00gsfwqszfcqxk8clprmshyi74-gum-0.16.1.drv",
+      "description": "Tasty Bubble Gum for your shell",
+      "install_id": "gum",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "name": "gum-0.16.1",
+      "pname": "gum",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:32:29.505694Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.16.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/lyqs0m9rf0laldm1gfa439nd3pxpxsby-gum-0.16.1"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
       "attr_path": "iana-etc",
       "broken": false,
       "derivation": "/nix/store/6r4aj5x4x48pfvjhzyilqynh984jxhcp-iana-etc-20250108.drv",
       "description": "IANA protocol and port number assignments (/etc/protocols and /etc/services)",
       "install_id": "iana-etc",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "iana-etc-20250108",
       "pname": "iana-etc",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:23:51.751498Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:36:16.719701Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -202,14 +353,15 @@
       "description": "IANA protocol and port number assignments (/etc/protocols and /etc/services)",
       "install_id": "iana-etc",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "iana-etc-20250108",
       "pname": "iana-etc",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:42:00.270454Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:54:50.606615Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -231,14 +383,15 @@
       "description": "IANA protocol and port number assignments (/etc/protocols and /etc/services)",
       "install_id": "iana-etc",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "iana-etc-20250108",
       "pname": "iana-etc",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:58:22.003098Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:12:23.992034Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -260,14 +413,15 @@
       "description": "IANA protocol and port number assignments (/etc/protocols and /etc/services)",
       "install_id": "iana-etc",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "iana-etc-20250108",
       "pname": "iana-etc",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T05:17:43.780971Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:32:30.286657Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -289,14 +443,15 @@
       "description": "Helper application and MIME type associations for file types",
       "install_id": "mailcap",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "mailcap-2.1.54",
       "pname": "mailcap",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:23:53.192637Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:36:18.199493Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -318,14 +473,15 @@
       "description": "Helper application and MIME type associations for file types",
       "install_id": "mailcap",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "mailcap-2.1.54",
       "pname": "mailcap",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:42:07.158742Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:54:57.561981Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -347,14 +503,15 @@
       "description": "Helper application and MIME type associations for file types",
       "install_id": "mailcap",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "mailcap-2.1.54",
       "pname": "mailcap",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:58:23.466563Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:12:25.512669Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -376,14 +533,15 @@
       "description": "Helper application and MIME type associations for file types",
       "install_id": "mailcap",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "mailcap-2.1.54",
       "pname": "mailcap",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T05:17:52.350864Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:32:38.956508Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -399,20 +557,141 @@
       "priority": 5
     },
     {
+      "attr_path": "redis",
+      "broken": false,
+      "derivation": "/nix/store/afa8q74lx2ggqlfq27bpjsqglac3sy6y-redis-7.2.7.drv",
+      "description": "Open source, advanced key-value store",
+      "install_id": "redis",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "name": "redis-7.2.7",
+      "pname": "redis",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:36:45.321942Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "7.2.7",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/l036d84q9asf9bzq2xi5jby2m7wxcv0l-redis-7.2.7"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "redis",
+      "broken": false,
+      "derivation": "/nix/store/kz85wwafsqbjx07hgb048mmf958dnf5y-redis-7.2.7.drv",
+      "description": "Open source, advanced key-value store",
+      "install_id": "redis",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "name": "redis-7.2.7",
+      "pname": "redis",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:55:41.328014Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "7.2.7",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/5h4108zpin8lidq5fzk661c2h71hdkyi-redis-7.2.7"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "redis",
+      "broken": false,
+      "derivation": "/nix/store/5x3ir4mbkm8viwqbqh6kspjl68whgg61-redis-7.2.7.drv",
+      "description": "Open source, advanced key-value store",
+      "install_id": "redis",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "name": "redis-7.2.7",
+      "pname": "redis",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:12:53.269869Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "7.2.7",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/wh6crdasw8762d7szd17xah1312wwps0-redis-7.2.7"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "redis",
+      "broken": false,
+      "derivation": "/nix/store/xvvbvx7ax2l3finxy29v3ffvlhfgb28h-redis-7.2.7.drv",
+      "description": "Open source, advanced key-value store",
+      "install_id": "redis",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "name": "redis-7.2.7",
+      "pname": "redis",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:33:26.210006Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "7.2.7",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/dfgshgy5ayrdkn4jsjmnq782rfpz7c1y-redis-7.2.7"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
       "attr_path": "tzdata",
       "broken": false,
       "derivation": "/nix/store/iw374iigbdl19xykkknixgn72cx7l5hv-tzdata-2025b.drv",
       "description": "Database of current and historical time zones",
       "install_id": "tzdata",
       "license": "[ BSD-3-Clause, Public Domain ]",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "tzdata-2025b",
       "pname": "tzdata",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:24:47.122454Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:37:12.480197Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -438,14 +717,15 @@
       "description": "Database of current and historical time zones",
       "install_id": "tzdata",
       "license": "[ BSD-3-Clause, Public Domain ]",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "tzdata-2025b",
       "pname": "tzdata",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:43:27.199761Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T00:56:18.835982Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -471,14 +751,15 @@
       "description": "Database of current and historical time zones",
       "install_id": "tzdata",
       "license": "[ BSD-3-Clause, Public Domain ]",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "tzdata-2025b",
       "pname": "tzdata",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T04:59:16.960061Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:13:21.249521Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -504,14 +785,15 @@
       "description": "Database of current and historical time zones",
       "install_id": "tzdata",
       "license": "[ BSD-3-Clause, Public Domain ]",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3e3afe5174c561dee0df6f2c2b2236990146329f",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=9e83b64f727c88a7711a2c463a7b16eedb69a84c",
       "name": "tzdata-2025b",
       "pname": "tzdata",
-      "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
-      "rev_count": 811950,
-      "rev_date": "2025-06-07T08:35:48Z",
-      "scrape_date": "2025-06-09T05:19:18.833683Z",
+      "rev": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "rev_count": 816272,
+      "rev_date": "2025-06-17T04:31:58Z",
+      "scrape_date": "2025-06-18T01:34:06.412813Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -530,5 +812,106 @@
       "group": "toplevel",
       "priority": 5
     }
-  ]
+  ],
+  "compose": {
+    "composer": {
+      "version": 1,
+      "install": {
+        "go": {
+          "pkg-path": "go"
+        },
+        "iana-etc": {
+          "pkg-path": "iana-etc"
+        },
+        "mailcap": {
+          "pkg-path": "mailcap"
+        },
+        "tzdata": {
+          "pkg-path": "tzdata"
+        }
+      },
+      "options": {},
+      "services": {
+        "quotes-app-go": {
+          "command": "go run main.go"
+        }
+      },
+      "build": {
+        "quotes-app-go": {
+          "command": "  mkdir -p $out/{lib,bin}\n  cp -pr quotes.json $out/lib\n\tgo mod tidy\n  go build -trimpath -o $out/bin/quotes-app-go main.go\n  chmod +x $out/bin/quotes-app-go\n",
+          "runtime-packages": [
+            "iana-etc",
+            "mailcap",
+            "tzdata"
+          ],
+          "version": "0.0.1",
+          "description": "Quotes App written in Go"
+        },
+        "quotes-app-go-deps": {
+          "command": "  export GOMODCACHE=$out\n  go mod download -modcacherw\n"
+        },
+        "quotes-app-go-pure": {
+          "command": "  export GOMODCACHE=${quotes-app-go-deps}\n  mkdir -p $out/{lib,bin}\n  cp -pr quotes.json $out/lib\n  go build -trimpath -o $out/bin/quotes-app-go-pure main.go\n  chmod +x $out/bin/quotes-app-go-pure\n",
+          "runtime-packages": [
+            "iana-etc",
+            "mailcap",
+            "tzdata"
+          ],
+          "sandbox": "pure",
+          "version": "0.0.1",
+          "description": "Quotes App written in Go"
+        }
+      },
+      "include": {
+        "environments": [
+          {
+            "remote": "flox/redis"
+          }
+        ]
+      }
+    },
+    "include": [
+      {
+        "manifest": {
+          "version": 1,
+          "install": {
+            "gum": {
+              "pkg-path": "gum"
+            },
+            "redis": {
+              "pkg-path": "redis"
+            }
+          },
+          "vars": {
+            "REDISBIND": "127.0.0.1",
+            "REDISPORT": "16379"
+          },
+          "hook": {
+            "on-activate": "\n# XXX: https://github.com/flox/flox/issues/1341\nunset LD_AUDIT\n\nexport REDISHOME=\"$FLOX_ENV_CACHE/redis\"\nexport REDISDATA=\"$REDISHOME/data\"\nexport REDISCONFIG=\"$REDISHOME/redis.conf\"\n\nif [ ! -d \"$REDISDATA\" ]; then\n  mkdir -p \"$REDISDATA\"\nfi\n\ncat >$REDISCONFIG <<EOF\nbind $REDISBIND\nport $REDISPORT\nEOF\n\n"
+          },
+          "profile": {
+            "common": "echo \"\"\necho \"     ╔═════════════════════════════════════╗\"\necho \"     ║                                     ║\"\necho \"     ║  Start Redis in the background:     ║\"\necho \"     ║  👉 flox services start             ║\"\necho \"     ║  👉 flox activate --start-services  ║\"\necho \"     ║                                     ║\"\necho \"     ║  Try to connect to Redis:           ║\"\necho \"     ║  👉redis-cli -p \\$REDISPORT ping     ║\"\necho \"     ║                                     ║\"\necho \"     ╚═════════════════════════════════════╝\"\necho \"\"\n"
+          },
+          "options": {
+            "systems": [
+              "aarch64-darwin",
+              "aarch64-linux",
+              "x86_64-darwin",
+              "x86_64-linux"
+            ]
+          },
+          "services": {
+            "redis": {
+              "command": "redis-server \"$REDISCONFIG\" \\\n  --daemonize no \\\n  --dir \"$REDISDATA\"\n"
+            }
+          }
+        },
+        "name": "redis",
+        "descriptor": {
+          "remote": "flox/redis"
+        }
+      }
+    ],
+    "warnings": []
+  }
 }

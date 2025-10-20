@@ -1,5 +1,10 @@
 version = 1
 
+[include]
+environments = [
+  { remote = "flox/redis" }
+]
+
 [install]
 go.pkg-path = "go"
 iana-etc.pkg-path = "iana-etc"
