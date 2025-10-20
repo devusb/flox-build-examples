@@ -11,46 +11,46 @@ iana-etc.pkg-path = "iana-etc"
 mailcap.pkg-path = "mailcap"
 tzdata.pkg-path = "tzdata"
 
-[build.quotes-app-go]
-version = "0.0.1"
-description = "Quotes App written in Go"
-command = """
-  mkdir -p $out/{lib,bin}
-  cp -pr quotes.json $out/lib
-	go mod tidy
-  go build -trimpath -o $out/bin/quotes-app-go main.go
-  chmod +x $out/bin/quotes-app-go
-"""
-# once the program is built, we no longer need "go" in the environment
-runtime-packages = [
-  "iana-etc",
-  "mailcap",
-  "tzdata",
-]
+# [build.quotes-app-go]
+# version = "0.0.1"
+# description = "Quotes App written in Go"
+# command = """
+#   mkdir -p $out/{lib,bin}
+#   cp -pr quotes.json $out/lib
+# 	go mod tidy
+#   go build -trimpath -o $out/bin/quotes-app-go main.go
+#   chmod +x $out/bin/quotes-app-go
+# """
+# # once the program is built, we no longer need "go" in the environment
+# runtime-packages = [
+#   "iana-etc",
+#   "mailcap",
+#   "tzdata",
+# ]
 
-[build.quotes-app-go-deps]
-command = '''
-  export GOMODCACHE=$out
-  go mod download -modcacherw
-'''
+# [build.quotes-app-go-deps]
+# command = '''
+#   export GOMODCACHE=$out
+#   go mod download -modcacherw
+# '''
 
-[build.quotes-app-go-pure]
-version = "0.0.1"
-description = "Quotes App written in Go"
-command = """
-  export GOMODCACHE=${quotes-app-go-deps}
-  mkdir -p $out/{lib,bin}
-  cp -pr quotes.json $out/lib
-  go build -trimpath -o $out/bin/quotes-app-go-pure main.go
-  chmod +x $out/bin/quotes-app-go-pure
-"""
-sandbox = "pure"
-# once the program is built, we no longer need "go" in the environment
-runtime-packages = [
-  "iana-etc",
-  "mailcap",
-  "tzdata",
-]
+# [build.quotes-app-go-pure]
+# version = "0.0.1"
+# description = "Quotes App written in Go"
+# command = """
+#   export GOMODCACHE=${quotes-app-go-deps}
+#   mkdir -p $out/{lib,bin}
+#   cp -pr quotes.json $out/lib
+#   go build -trimpath -o $out/bin/quotes-app-go-pure main.go
+#   chmod +x $out/bin/quotes-app-go-pure
+# """
+# sandbox = "pure"
+# # once the program is built, we no longer need "go" in the environment
+# runtime-packages = [
+#   "iana-etc",
+#   "mailcap",
+#   "tzdata",
+# ]
 
 [services]
 quotes-app-go.command = "go run main.go"

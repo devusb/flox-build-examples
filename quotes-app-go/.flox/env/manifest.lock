@@ -47,32 +47,6 @@
       "redis": {
         "command": "redis-server \"$REDISCONFIG\" \\\n  --daemonize no \\\n  --dir \"$REDISDATA\"\n"
       }
-    },
-    "build": {
-      "quotes-app-go": {
-        "command": "  mkdir -p $out/{lib,bin}\n  cp -pr quotes.json $out/lib\n\tgo mod tidy\n  go build -trimpath -o $out/bin/quotes-app-go main.go\n  chmod +x $out/bin/quotes-app-go\n",
-        "runtime-packages": [
-          "iana-etc",
-          "mailcap",
-          "tzdata"
-        ],
-        "version": "0.0.1",
-        "description": "Quotes App written in Go"
-      },
-      "quotes-app-go-deps": {
-        "command": "  export GOMODCACHE=$out\n  go mod download -modcacherw\n"
-      },
-      "quotes-app-go-pure": {
-        "command": "  export GOMODCACHE=${quotes-app-go-deps}\n  mkdir -p $out/{lib,bin}\n  cp -pr quotes.json $out/lib\n  go build -trimpath -o $out/bin/quotes-app-go-pure main.go\n  chmod +x $out/bin/quotes-app-go-pure\n",
-        "runtime-packages": [
-          "iana-etc",
-          "mailcap",
-          "tzdata"
-        ],
-        "sandbox": "pure",
-        "version": "0.0.1",
-        "description": "Quotes App written in Go"
-      }
     }
   },
   "packages": [
@@ -834,32 +808,6 @@
       "services": {
         "quotes-app-go": {
           "command": "go run main.go"
-        }
-      },
-      "build": {
-        "quotes-app-go": {
-          "command": "  mkdir -p $out/{lib,bin}\n  cp -pr quotes.json $out/lib\n\tgo mod tidy\n  go build -trimpath -o $out/bin/quotes-app-go main.go\n  chmod +x $out/bin/quotes-app-go\n",
-          "runtime-packages": [
-            "iana-etc",
-            "mailcap",
-            "tzdata"
-          ],
-          "version": "0.0.1",
-          "description": "Quotes App written in Go"
-        },
-        "quotes-app-go-deps": {
-          "command": "  export GOMODCACHE=$out\n  go mod download -modcacherw\n"
-        },
-        "quotes-app-go-pure": {
-          "command": "  export GOMODCACHE=${quotes-app-go-deps}\n  mkdir -p $out/{lib,bin}\n  cp -pr quotes.json $out/lib\n  go build -trimpath -o $out/bin/quotes-app-go-pure main.go\n  chmod +x $out/bin/quotes-app-go-pure\n",
-          "runtime-packages": [
-            "iana-etc",
-            "mailcap",
-            "tzdata"
-          ],
-          "sandbox": "pure",
-          "version": "0.0.1",
-          "description": "Quotes App written in Go"
         }
       },
       "include": {
