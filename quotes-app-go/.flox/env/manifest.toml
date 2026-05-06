@@ -1,10 +1,11 @@
-version = 1
+schema-version = "1.12.0"
 
 [install]
 go.pkg-path = "go"
 iana-etc.pkg-path = "iana-etc"
 mailcap.pkg-path = "mailcap"
 tzdata.pkg-path = "tzdata"
+tzdata.outputs = "all"
 
 [build.quotes-app-go]
 version = "0.0.1"
