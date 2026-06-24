@@ -1,4 +1,4 @@
-version = 1
+schema-version = "1.13.0"
 
 [include]
 environments = [
@@ -10,6 +10,7 @@ go.pkg-path = "go"
 iana-etc.pkg-path = "iana-etc"
 mailcap.pkg-path = "mailcap"
 tzdata.pkg-path = "tzdata"
+tzdata.outputs = "all"
 
 # [build.quotes-app-go]
 # version = "0.0.1"
@@ -54,3 +55,4 @@ tzdata.pkg-path = "tzdata"
 
 [services]
 quotes-app-go.command = "go run main.go"
+quotes-app-go.vars.REDIS_HOST = "localhost:16379"

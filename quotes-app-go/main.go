@@ -4,10 +4,10 @@ import (
 	"context"
 	_ "embed"
 	"encoding/json"
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -17,26 +17,61 @@ import (
 //go:embed quotes.json
 var quotesFile []byte
 
-func (q QuotesRedis) loadQuotes(ctx context.Context) error {
-	var quotes []string
-	if err := json.Unmarshal(quotesFile, &quotes); err != nil {
-		return err
-	}
+type QuoteStore interface {
+	Load(ctx context.Context, quotes []string) error
+	All(ctx context.Context) ([]string, error)
+}
 
+type RedisStore struct {
+	rdb *redis.Client
+	key string
+}
+
+func NewRedisStore(host string) *RedisStore {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     host,
+		Password: "",
+		DB:       0,
+	})
+	return &RedisStore{rdb: rdb, key: "quotes"}
+}
+
+func (s *RedisStore) Load(ctx context.Context, quotes []string) error {
 	for _, v := range quotes {
-		err := q.writeQuoteToRedis(ctx, v)
-		if err != nil {
+		if _, err := s.rdb.SAdd(ctx, s.key, v).Result(); err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 
-func (q QuotesRedis) getAllQuotes(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
+func (s *RedisStore) All(ctx context.Context) ([]string, error) {
+	return s.rdb.SMembers(ctx, s.key).Result()
+}
 
-	quotes, err := q.rdb.SMembers(ctx, q.key).Result()
+type MemoryStore struct {
+	quotes []string
+}
+
+func NewMemoryStore() *MemoryStore {
+	return &MemoryStore{}
+}
+
+func (s *MemoryStore) Load(ctx context.Context, quotes []string) error {
+	s.quotes = append(s.quotes, quotes...)
+	return nil
+}
+
+func (s *MemoryStore) All(ctx context.Context) ([]string, error) {
+	return s.quotes, nil
+}
+
+type server struct {
+	store QuoteStore
+}
+
+func (srv server) getAllQuotes(w http.ResponseWriter, r *http.Request) {
+	quotes, err := srv.store.All(r.Context())
 	if err != nil {
 		http.Error(w, `{"error": "failed to fetch quotes"}`, http.StatusInternalServerError)
 		return
@@ -45,10 +80,8 @@ func (q QuotesRedis) getAllQuotes(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(quotes)
 }
 
-func (q QuotesRedis) getQuoteByIndex(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	quotes, err := q.rdb.SMembers(ctx, q.key).Result()
+func (srv server) getQuoteByIndex(w http.ResponseWriter, r *http.Request) {
+	quotes, err := srv.store.All(r.Context())
 	if err != nil {
 		http.Error(w, `{"error": "failed to fetch quote"}`, http.StatusInternalServerError)
 		return
@@ -67,51 +100,35 @@ func (q QuotesRedis) getQuoteByIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	fmt.Fprintln(w, quotes[index])
 }
 
-type QuotesRedis struct {
-	rdb *redis.Client
-	key string
-}
-
-func NewQuotes(host string) *QuotesRedis {
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     host,
-		Password: "",
-		DB:       0,
-	})
-	return &QuotesRedis{rdb: rdb, key: "quotes"}
-}
-
-func (q QuotesRedis) writeQuoteToRedis(ctx context.Context, value string) error {
-	_, err := q.rdb.SAdd(ctx, q.key, value).Result()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func main() {
-	var redisHost string
-	flag.StringVar(&redisHost, "r", "localhost:16379", "hostname for redis")
-	flag.Parse()
+	var quotes []string
+	if err := json.Unmarshal(quotesFile, &quotes); err != nil {
+		log.Fatalf("Failed to parse quotes: %v\n", err)
+	}
 
-	client := NewQuotes(redisHost)
+	var store QuoteStore
+	if host := os.Getenv("REDIS_HOST"); host != "" {
+		store = NewRedisStore(host)
+		log.Printf("Using Redis storage at %s\n", host)
+	} else {
+		store = NewMemoryStore()
+		log.Println("Using in-memory storage")
+	}
 
 	ctx := context.Background()
-
-	err := client.loadQuotes(ctx)
-	if err != nil {
+	if err := store.Load(ctx, quotes); err != nil {
 		log.Fatalf("Failed to load quotes: %v\n", err)
 	}
 
+	srv := server{store: store}
+
 	r := mux.NewRouter()
-	r.HandleFunc("/quotes", client.getAllQuotes).Methods("GET")
-	r.HandleFunc("/quotes/{index}", client.getQuoteByIndex).Methods("GET")
+	r.HandleFunc("/quotes", srv.getAllQuotes).Methods("GET")
+	r.HandleFunc("/quotes/{index}", srv.getQuoteByIndex).Methods("GET")
 
 	addr := ":3000"
 	fmt.Printf("Server running on %s\n", addr)

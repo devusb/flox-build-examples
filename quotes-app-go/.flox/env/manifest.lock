@@ -1,13 +1,14 @@
 {
   "lockfile-version": 1,
   "manifest": {
-    "version": 1,
+    "schema-version": "1.13.0",
     "install": {
       "go": {
         "pkg-path": "go"
       },
       "gum": {
-        "pkg-path": "gum"
+        "pkg-path": "gum",
+        "outputs": "all"
       },
       "iana-etc": {
         "pkg-path": "iana-etc"
@@ -16,10 +17,12 @@
         "pkg-path": "mailcap"
       },
       "redis": {
-        "pkg-path": "redis"
+        "pkg-path": "redis",
+        "outputs": "all"
       },
       "tzdata": {
-        "pkg-path": "tzdata"
+        "pkg-path": "tzdata",
+        "outputs": "all"
       }
     },
     "vars": {
@@ -42,7 +45,10 @@
     },
     "services": {
       "quotes-app-go": {
-        "command": "go run main.go"
+        "command": "go run main.go",
+        "vars": {
+          "REDIS_HOST": "localhost:16379"
+        }
       },
       "redis": {
         "command": "redis-server \"$REDISCONFIG\" \\\n  --daemonize no \\\n  --dir \"$REDISDATA\"\n"
@@ -789,7 +795,7 @@
   ],
   "compose": {
     "composer": {
-      "version": 1,
+      "schema-version": "1.13.0",
       "install": {
         "go": {
           "pkg-path": "go"
@@ -801,13 +807,17 @@
           "pkg-path": "mailcap"
         },
         "tzdata": {
-          "pkg-path": "tzdata"
+          "pkg-path": "tzdata",
+          "outputs": "all"
         }
       },
       "options": {},
       "services": {
         "quotes-app-go": {
-          "command": "go run main.go"
+          "command": "go run main.go",
+          "vars": {
+            "REDIS_HOST": "localhost:16379"
+          }
         }
       },
       "include": {
